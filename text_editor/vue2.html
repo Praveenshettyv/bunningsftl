@@ -1,0 +1,87 @@
+<style>
+      .addStep{
+        display: flex;
+        border: 1px solid #b7b7a4;
+        border-radius: 5px;
+        min-width: 400px;
+        width: 50%;
+        min-height: 250px;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        background-color: #b7b7a4;
+    }
+    .innerAddStep{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .plusBtn{
+        font-weight: normal;
+        font-size: 6rem;
+    }
+    .addStepTxt{
+        margin-top: -10px;
+    }
+</style>
+<script src="https://unpkg.com/vue@3"></script>
+<script src="${asset.get("/html/assets/quiljs.js")}"></script>
+<link href="${asset.get("/html/assets/quilcss.css")}" rel="stylesheet">
+<!-- <script src="${asset.get("/html/assets/quiljs.js")}"></script> -->
+<div id="app">
+  <div v-for="step in steps" >
+    {{step.name}}
+      <!--  -->
+    <div id="editor" v-form="step.body">
+      <p>Hello World!</p>
+      <p>Some initial <strong>bold</strong> text</p>
+      <p><br></p>
+    </div>
+    <!--  -->
+  </div>
+  <div class='addStep'><div class='innerAddStep'><div class='plusBtn' v-on:click="addNewStep()">+</div><div class='addStepTxt'>Click to Add Another step</div></div></div>
+  <button v-on:click="submitForm()" >
+    submit
+  </button>
+</div>
+<script>
+     var quill = new Quill('#editor', {
+       modules: {
+       toolbar: [
+         [{ header: [1, 2, false] }],
+         ['bold', 'italic', 'underline', 'link', 'video'],
+         ['image', 'code-block']
+       ]
+       },
+       placeholder: 'Compose an epic...',
+       theme: 'snow'
+     });
+  const { createApp } = Vue;
+  createApp({
+    data() {
+      return {
+        steps: [ 
+          {
+            name: "Steps", 
+            body: ""
+          }
+        ]
+      }
+    }, 
+    methods: { 
+      addNewStep ()  {
+        this.steps.push({
+          name: "", 
+          body: ""
+        })
+      }, 
+      submitForm() {
+        console.log("data >>> ", this.steps)
+      }
+    },
+    
+  }).mount("#app");
+</script>

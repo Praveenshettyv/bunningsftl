@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>post</title>
+</head>
+<body>
+   <h1>Wlcome this is post call </h1>
+<button onclick="myfunction()">submit</button>
+<script>
+function myfunction(){
+   console.log("this is first line")
+   const options = {
+   method: 'POST',
+   headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
+   body: JSON.stringify({data: {
+      "type":"message",
+      "subject":"Favorite recipies"
+   }})
+   };
+   console.log("this is fetch ss line")
+   fetch('https://italent2.demo.lithium.com/api/2.0/messages', options)
+   .then(response => response.json())
+   .then(response => console.log(response))
+   .catch(err => console.error(err));
+   }
+</script>
+   
+</body>
+</html>

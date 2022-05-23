@@ -1,0 +1,82 @@
+<style>
+    .btn{
+        margin-right: 3px;
+        padding: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.2rem;
+        text-decoration: none;
+    }
+
+    .texteditorBox{
+       width: 100%;
+     }    
+
+    .textEditor {
+        border:solid 1px #b7b7a4;
+        padding: 20px;
+        min-height:200px;
+        width: 100%;
+        outline: none;
+        resize: vertical;
+        overflow: auto;
+    }
+
+    .textEditor:empty:before{
+        content: attr(data-placeholder);
+        color:gray;
+        width:100%;
+        height: auto;
+    }
+
+    .toolbar {
+        width:100%;
+        border:solid 1px #ddd;
+        background:#f4f4f4;
+        padding: 10px 5px;
+        border-radius:3px;
+    }
+
+    .toolbar > span {
+        cursor:pointer;
+    }
+    .urlInputBox{
+        padding:5px !important;
+        display: inline !important;
+        border-radius: 5px !important;
+    }
+    .textEditorTitle{
+        margin: 5px 0px;
+     }
+</style>  
+<div class="texteditorBox" id="textEditor_Title2">
+<div class="toolbar">
+    <a href="javascript:void(0)" onclick="format('bold')" class="btn">B</a>
+    <a href="javascript:void(0)" onclick="format('italic')" class="btn">I</a>
+    <span class="btn" id="smailyBtn">🙂</span>
+    <i class="btn lia-fa lia-fa-list" id="menuBtn"></i>
+    <i class="btn lia-fa lia-fa-caret-down" id="downArrowBtn"></i>
+    <a href="javascript:void(0)" onclick="setUrl()" class="btn">🔗</a>
+    <input type="text" id="txtFormatUrl" placeholder="url" class="urlInputBox">
+</div>
+
+<div class="textEditor" id="sample_editor2" contenteditable="true" data-placeholder="Type a Message"></div>
+</div>
+
+<script>
+    window.addEventListener('load', function(){
+        document.getElementById('sampleeditor').setAttribute('contenteditable', 'true');
+    });
+
+    function format(command, value) {
+        document.execCommand(command, false, value);
+    }
+
+    function setUrl() {
+        var url = document.getElementById('txtFormatUrl').value;
+        var sText = document.getSelection();
+        document.execCommand('insertHTML', false, '<a href="' + url + '" target="_blank">' + sText + '</a>');
+        document.getElementById('txtFormatUrl').value = '';
+    }
+
+</script>
