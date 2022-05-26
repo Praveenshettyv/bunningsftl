@@ -243,6 +243,17 @@
     .d_block{
         display: block;
     }
+    .label_active{
+        background-color: green;
+        height: 30px;
+        width: 120px;
+        color:block;
+        cursor: pointer;
+        border-radius: 250%;
+        text-align: center;
+        font-size:10px;
+        margin-bottom: 20px;
+    }
 </style>
     <#assign Res_board=  rest("2.0","/search?q=" + "select title,id from boards"?url).data  />
     <div class="button_bunn_cls">
@@ -298,10 +309,10 @@
                     <script>
                     var quill = new Quill('#editor_one', {
                         modules: {
-                        toolbar: [
-                            [{ header: [1, 2, false] }],
-                            ['bold', 'italic', 'underline', 'link', 'video', 'image']
-                        ]
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
+                            ]
                         },
                         placeholder: 'Hint: You could explain what the project is,the difficulty level,the purpose of the completed project ,any special tips you learned along the way,etc',
                         theme: 'snow'
@@ -329,7 +340,7 @@
                                 modules: {
                                 toolbar: [
                                 [{ header: [1, 2, false] }],
-                                ['bold', 'italic', 'underline', 'link', 'video', 'image']
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
                                 ]
                                 },
                                 placeholder: 'Hint: Use bullet point for an easy to read list',
@@ -357,7 +368,7 @@
                         modules: {
                         toolbar: [
                         [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline', 'link', 'video', 'image']
+                        ['bold', 'italic', 'underline', 'link', 'image', 'video']
                         ]
                         },
                         placeholder: 'Hint: Use bullet point for an easy to read list',
@@ -515,6 +526,7 @@
         <#--  selected label function event  -->
         $(".button_label").on("click", function($event){
             var label_project=$event.target.getAttribute("value");
+             $event.target.setAttribute("class", "label_active");
              var Array_labels=label_project.split("_");
             var i=0;
                 var data_lables_project={
@@ -598,6 +610,7 @@
             }).then((response) => response)
              .then((json) => {
                 window.location.reload();
+                location.href = 'https://italent2.demo.lithium.com/t5/'+bunning_board_label+'/bd-p/'+bunning_board_val;
                 console.log(json)
             })
             .catch(err => console.error(err));
@@ -690,10 +703,10 @@
                     <script>
                     var quill = new Quill('#editor_one_ask', {
                         modules: {
-                        toolbar: [
-                            [{ header: [1, 2, false] }],
-                            ['bold', 'italic', 'underline', 'link', 'video', 'image']
-                        ]
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
+                            ]
                         },
                         placeholder: 'Hint:Add as much details as possible nd add your best photo first',
                         theme: 'snow'
@@ -726,7 +739,7 @@
             <div>
                 <button id="bunning_post">Post</button>
                 <button  id="preview_ask">Preview</button>
-                <button id="save_draft_btn">Save Draft</button>
+                <button>Save Draft</button>
                 <button>Cancel</button>
             </div>
         </div><br>
@@ -739,6 +752,7 @@
         var image_data_ask;
         var image_id_ask;
 
+
         <#--  On button click close image viewer  -->
         $('#img_remove_btn').on('click', function(){
             if($( "#img_View_id" ).hasClass('d_block')){
@@ -750,6 +764,7 @@
         <#--  lables data functions   -->
         $('*[data-id="button_label_ask"]').on("click", function($event){
             let label=$event.target.getAttribute("value");
+            $event.target.setAttribute("class", "label_active");
             var Array_l=label.split("_");
             var i=0;
                 var data_lables={
@@ -883,48 +898,9 @@
             })
             }).then((response) => response)
              .then((json) => {
-                window.location.reload();
-                console.log(json)
-            })
-            .catch(err => console.error(err));
-        });
-        <#--  save and draft function here  -->
-            $("#save_draft_btn").click(function(){
-            let inp1Title_ask = $("#titleInputLabel2_ask").text();
-            let inp1Value_ask = $("#titleInput2_ask").val();
-            let inp2Title_ask = $("#selectBoxLabel2_ask").text();
-            let inp2Value_ask = $("#selectBox2_ask").val();
-            let textEditor_Title_ask = $("#textEditorTitle_ask").text();
-            let textEditor_ask = $("#editor_one_ask > .ql-editor").html();
-            let fileUpload_ask = $("#image.contentss").val();
-    
-            fetch("/api/2.0/messages", {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "Put"||"Post",
-            <#--    -->
-             body: JSON.stringify({"data":
-                {
-                    "type":"message",
-                    "subject":inp1Value_ask,
-                    "body":textEditor_ask,
-                    "board":{
-                        "id":inp2Value_ask
-                    },
-                    cover_image:{
-                        type: "image",
-                        id:image_id_ask
-                    },
-                    "labels": {
-                        "items":selectedLabelsArr
-                    }
-                }
-            })
-            }).then((response) => response)
-             .then((json) => {
-                window.location.reload();
+                 <#--  https://italent2.demo.lithium.com/t5/Theories-Dialog/bd-p/lean_theories  -->
+                 location.href = 'https://italent2.demo.lithium.com/t5/'+inp2Title_ask+'/bd-p/'+inp2Value_ask;
+                <#--  window.location.reload();  -->
                 console.log(json)
             })
             .catch(err => console.error(err));

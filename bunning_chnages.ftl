@@ -243,6 +243,29 @@
     .d_block{
         display: block;
     }
+    .label_active{
+        background-color: green;
+        height: 30px;
+        width: 120px;
+        color:block;
+        cursor: pointer;
+        border-radius: 250%;
+        text-align: center;
+        font-size:10px;
+        margin-bottom: 20px;
+    }
+    .bunning_btn{
+        background-color: #00001a;
+        border: none;
+        color: white;
+        padding: 10px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: 16px
+    }
 </style>
     <#assign Res_board=  rest("2.0","/search?q=" + "select title,id from boards"?url).data  />
     <div class="button_bunn_cls">
@@ -293,7 +316,6 @@
 
                     <#-- Include the Quill library -->
                     <script src="${asset.get('/html/assets/quilt.js')}"></script>
-
                     <!-- Initialize Quill editor -->
                     <script>
                     var quill = new Quill('#editor_one', {
@@ -314,12 +336,9 @@
                         <#--  editor start here  -->
                         <#-- Include stylesheet -->
                             <link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
-
                             <#-- Create the editor container -->
                             <div id="editor_two">
-
                             </div>
-
                             <#-- Include the Quill library -->
                             <script src="${asset.get('/html/assets/quilt.js')}"></script>
 
@@ -384,16 +403,37 @@
             </div>
             <div class='addStep' id='addStep'><div class='innerAddStep'><div v-on:click="addEditor()" class='plusBtn'>+</div><div class='addStepTxt'>Click to Add Another step</div></div></div>
             </div>
-            <script src="${asset.get('/html/assets/quilt.js')}"></script>
+            <#--   text editor  ends here -->
+            </div>
+        </div>
+        <#assign labelsResponse= rest("/labels/")   />
+        <#list labelsResponse.labels.label as li> 
+            <button class="button_label" value="${li.text}" id="button_project_label">${li.text}</button>
+        </#list>
+        <div class="popup" id="popup_project" style="display:none;">
+            <div id="inner_popup_project">
+                
+            </div>
+                <div class='buttons'><button class='popup_btn_project success'>Okay</button><button class='popup_btn_project cancel'>Cancel</button></div>
+            </div>
+        <div>
+            <button class="bunning_btn"  id="Post_data_project">Post</button>
+            <button  class="bunning_btn"  id="previewss">Preview</button>
+            <button class="bunning_btn" id="save_draft_p">Save Draft</button>
+            <button class="bunning_btn" id="Cancel">Cancel</button>
+        </div>
+    </div>
+
+<script src="${asset.get('/html/assets/quilt.js')}"></script>
             <#-- Initialize Quill editor -->
             <script>
+            var editorss ={};
             const { createApp } = Vue;
-
             createApp({
                 data() {
                 return {
                     count: 1,
-                    editors: {}
+                    editors: {},
                 };
                 },
                 methods: {
@@ -412,7 +452,6 @@
                     } else {
                        document.getElementById("addStep").classList.remove('d_none');
                     }
-                   
                 },
                 addQuil() {
                     new Quill('#editor' + this.count, {
@@ -427,7 +466,7 @@
                     });
                 },
                 onInput(e){
-                    this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
+                 data=this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
                 },
                 submitForm() {
                     console.log(this.editors, "editor data")
@@ -438,7 +477,7 @@
                 },
                 updated(){
                     this?.addQuil();
-
+    
                     /** button event add a steps of text editor */
                     document.querySelector('.plusBtn').addEventListener('click', function(){
                         var value_bunn=document.querySelectorAll('.editor');
@@ -451,27 +490,8 @@
                     })
                 },
             }).mount("#app");
+            
             </script>
-            <#--   text editor  ends here -->
-            </div>
-        </div>
-        <#assign labelsResponse= rest("/labels/")   />
-        <#list labelsResponse.labels.label as li> 
-            <button class="button_label" value="${li.text}" id="button_project_label">${li.text}</button>
-        </#list>
-        <div class="popup" id="popup_project" style="display:none;">
-            <div id="inner_popup_project">
-                
-            </div>
-                <div class='buttons'><button class='popup_btn_project success'>Okay</button><button class='popup_btn_project cancel'>Cancel</button></div>
-            </div>
-        <div>
-            <button id="Post_data_project">Post</button>
-            <button id="previewss">Preview</button>
-            <button>Save Draft</button>
-            <button id="Cancel">Cancel</button>
-        </div>
-    </div>
 
     <@liaAddScript>
     ;(function ($) {
@@ -515,6 +535,7 @@
         <#--  selected label function event  -->
         $(".button_label").on("click", function($event){
             var label_project=$event.target.getAttribute("value");
+             $event.target.setAttribute("class", "label_active");
              var Array_labels=label_project.split("_");
             var i=0;
                 var data_lables_project={
@@ -561,6 +582,7 @@
 
         <#--  post call using fetch   -->
         $("#Post_data_project").click(function(){
+            var steps_text_data;
             let bunning_label1 = $("#bunning_project_label1").text();
             let bunning_input1 = $("#bunning_project_val1").val();
             let bunning_board_label = $("#bunning_project_board_label").text();
@@ -572,7 +594,7 @@
             let textEditor_pro_three = $("#editor_three > .ql-editor").html();
 
             fetch("/api/2.0/messages", {
-                <#--    -->
+                
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -592,12 +614,20 @@
                         },
                         "labels": {
                             "items":labels_project_Arr
+                        },
+                        c_bunnings_post:{
+                            "description" : textEditor_pro_one,
+                            "Tools" : textEditor_pro_two,
+                            "Materials " : textEditor_pro_three
+                            <#--  ,
+                            "Steps " :  steps_text_data  -->
                         }
                     }
                 })
             }).then((response) => response)
              .then((json) => {
                 window.location.reload();
+                <#--  location.href = 'https://italent2.demo.lithium.com/t5/'+bunning_board_label+'/bd-p/'+bunning_board_val;  -->
                 console.log(json)
             })
             .catch(err => console.error(err));
@@ -724,10 +754,10 @@
                 <div class='buttons'><button class='popup_btn success'>Okay</button><button class='popup_btn cancel'>Cancel</button></div>
             </div>
             <div>
-                <button id="bunning_post">Post</button>
-                <button  id="preview_ask">Preview</button>
-                <button>Save Draft</button>
-                <button>Cancel</button>
+                <button class="bunning_btn" id="bunning_post">Post</button>
+                <button class="bunning_btn"  id="preview_ask">Preview</button>
+                <button class="bunning_btn" >Save Draft</button>
+                <button class="bunning_btn" >Cancel</button>
             </div>
         </div><br>
     </div>
@@ -748,8 +778,10 @@
         });
 
         <#--  lables data functions   -->
+        
         $('*[data-id="button_label_ask"]').on("click", function($event){
             let label=$event.target.getAttribute("value");
+            var element_event=$event.target.toggleClass("label_active");
             var Array_l=label.split("_");
             var i=0;
                 var data_lables={
@@ -846,7 +878,6 @@
                 });
             });
         });
-
         <#--  fetch the data using java script   -->
             $("#bunning_post").click(function(){
             let inp1Title_ask = $("#titleInputLabel2_ask").text();
@@ -863,7 +894,7 @@
                 "Content-Type": "application/json",
             },
             method: "POST",
-            <#--    -->
+         
              body: JSON.stringify({"data":
                 {
                     "type":"message",
@@ -883,13 +914,17 @@
             })
             }).then((response) => response)
              .then((json) => {
-                window.location.reload();
+
+                 location.href = 'https://italent2.demo.lithium.com/t5/'+inp2Title_ask+'/bd-p/'+inp2Value_ask;
+
                 console.log(json)
             })
             .catch(err => console.error(err));
+
+                
+
         });
 
     })(LITHIUM.jQuery);
     </@liaAddScript>
-
     <#--  Ask a Question start here  -->
