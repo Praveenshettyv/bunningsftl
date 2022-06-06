@@ -243,12 +243,39 @@
     .d_block{
         display: block;
     }
+    .label_active{
+        background-color: green;
+        height: 30px;
+        width: 120px;
+        color:block;
+        cursor: pointer;
+        border-radius: 250%;
+        text-align: center;
+        font-size:10px;
+        margin-bottom: 20px;
+    }
+    .bunning_btn{
+        background-color: #00001a;
+        border: none;
+        color: white;
+        padding: 10px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: 16px
+    }
 </style>
+<script src="https://unpkg.com/vue@3"></script>
+<link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
+
     <#assign Res_board=  rest("2.0","/search?q=" + "select title,id from boards"?url).data  />
     <div class="button_bunn_cls">
         <button class="bunnings_button_askme active">Ask a home improvement Question</button>
         <button class="bunnings_button_share">Share a completed project</button>
     </div>
+
     <#-- Share a project start here   -->
     <div class="askaquestion_bunn">
         <div class='container1'>
@@ -270,8 +297,8 @@
             <div class="box">
             <p class='label'>Add a photo of your <b>completed</b> DIY Project:</p>
                 <div>
-                    <label for="image.content" class="btn">Upload Image</label>
-                    <input type='file' name='image.content' class='uploadBtn' id='image.content' value='Upload Image' accept="image/png, image/jpeg"/>
+                    <label for="image.content" class="btn" id='share_upload_img'>Upload Image</label>
+                    <input type='file' name='image.content' class='uploadBtn' style='display:none' id='image.content' value='Upload Image' accept="image/png, image/jpeg"/>
                     <span class='hintText'>Hint: This will be the main feature photo everyone sees first, make it your best one!</span>
                 </div>
                 <span class='loadingTxt d_none' id='loadingTxt'>Uploading Image Wait ...</span>
@@ -288,23 +315,18 @@
 
                     <#-- Create the editor container -->
                     <div id="editor_one">
-                    <#--  <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
-                    <p><br></p>  -->
                     </div>
 
                     <#-- Include the Quill library -->
                     <script src="${asset.get('/html/assets/quilt.js')}"></script>
-
                     <!-- Initialize Quill editor -->
                     <script>
                     var quill = new Quill('#editor_one', {
                         modules: {
-                        toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline', 'link', 'video'],
-                        ['image', 'code-block']
-                        ]
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
+                            ]
                         },
                         placeholder: 'Hint: You could explain what the project is,the difficulty level,the purpose of the completed project ,any special tips you learned along the way,etc',
                         theme: 'snow'
@@ -317,14 +339,9 @@
                         <#--  editor start here  -->
                         <#-- Include stylesheet -->
                             <link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
-
                             <#-- Create the editor container -->
                             <div id="editor_two">
-                            <#--  <p>Hello World!</p>
-                            <p>Some initial <strong>bold</strong> text</p>
-                            <p><br></p>  -->
                             </div>
-
                             <#-- Include the Quill library -->
                             <script src="${asset.get('/html/assets/quilt.js')}"></script>
 
@@ -334,8 +351,7 @@
                                 modules: {
                                 toolbar: [
                                 [{ header: [1, 2, false] }],
-                                ['bold', 'italic', 'underline', 'link', 'video'],
-                                ['image', 'code-block']
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
                                 ]
                                 },
                                 placeholder: 'Hint: Use bullet point for an easy to read list',
@@ -352,9 +368,6 @@
 
                     <#-- Create the editor container -->
                     <div id="editor_three">
-                    <#--  <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
-                    <p><br></p>  -->
                     </div>
 
                     <#-- Include the Quill library -->
@@ -366,8 +379,7 @@
                         modules: {
                         toolbar: [
                         [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline', 'link', 'video'],
-                        ['image', 'code-block']
+                        ['bold', 'italic', 'underline', 'link', 'image', 'video']
                         ]
                         },
                         placeholder: 'Hint: Use bullet point for an easy to read list',
@@ -384,84 +396,14 @@
             <p class='under_title'>List the steps you took to get to the final product. This will help everyone follow along as they try it themseleves.</p>
             <div class="inner_categorypage_add_step_box" id='inner_categorypage_add_step_box'>
             <#--  text editor  start here   -->
-            <script src="https://unpkg.com/vue@3"></script>
-            <link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
 
             <div id="app" class='editors_box' >
-            <div v-for="id in count" class="editor">
-                <button v-bind:id="'remove' + id" v-on:click="e => removeEditor(e)" class="remove_editor">X</button>
-                <div v-bind:id="'editor' + id" class='editor_comp' contenteditable @input="onInput"></div>
-            </div>
+                <div v-for="id in count" class="editor">
+                    <button v-bind:id="'remove' + id" v-on:click="e => removeEditor(e)" class="remove_editor">X</button>
+                    <div v-bind:id="'editor' + id" class='editor_comp' contenteditable @input="onInput"></div>
+                </div>
             <div class='addStep' id='addStep'><div class='innerAddStep'><div v-on:click="addEditor()" class='plusBtn'>+</div><div class='addStepTxt'>Click to Add Another step</div></div></div>
             </div>
-            <script src="${asset.get('/html/assets/quilt.js')}"></script>
-            <#-- Initialize Quill editor -->
-            <script>
-            const { createApp } = Vue;
-
-            createApp({
-                data() {
-                return {
-                    count: 1,
-                    editors: {}
-                };
-                },
-                methods: {
-                addEditor() {
-                    this.count = this.count + 1;
-                },
-                removeEditor(e) {
-                     console.log(e, 'target')
-                    e.path[1]?.remove()
-
-                    /** Re render and change class in addStep div on click of removeBtn  */
-                    let count_vue=document.querySelectorAll(".editor").length;
-                    console.log('count data is using vue js ',count_vue)
-                    if (count_vue < 10) {
-                       document.getElementById("addStep").classList.add('d_block');
-                    } else {
-                       document.getElementById("addStep").classList.remove('d_none');
-                    }
-                   
-                },
-                addQuil() {
-                    new Quill('#editor' + this.count, {
-                    modules: {
-                        toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ["bold", "italic", "underline", "link", "image", "video"]
-                        ],
-                    },
-                    placeholder: "Hint :Describe what you did,be as detailed as possible",
-                    theme: "snow",
-                    });
-                },
-                onInput(e){
-                    this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
-                },
-                submitForm() {
-                    console.log(this.editors, "editor data")
-                },
-                },
-                mounted(){
-                    this?.addQuil();
-                },
-                updated(){
-                    this?.addQuil();
-
-                    /** button event add a steps of text editor */
-                    document.querySelector('.plusBtn').addEventListener('click', function(){
-                        var value_bunn=document.querySelectorAll('.editor');
-                        if(value_bunn.length > 9){
-                            document.querySelector('.addStep').classList.add('d_none');
-                             if(document.querySelector('.addStep').classList.contains('d_block')){
-                                document.querySelector('.addStep').classList.remove('d_block');
-                            }
-                        }
-                    })
-                },
-            }).mount("#app");
-            </script>
             <#--   text editor  ends here -->
             </div>
         </div>
@@ -476,29 +418,109 @@
                 <div class='buttons'><button class='popup_btn_project success'>Okay</button><button class='popup_btn_project cancel'>Cancel</button></div>
             </div>
         <div>
-            <button id="Post_data_project">Post</button>
-            <button id="previewss">Preview</button>
-            <button>Save Draft</button>
-            <button id="Cancel">Cancel</button>
+            <div class="bunning_btn"  id="Post_data_project">Post</div>
+            <button  class="bunning_btn"  id="previewss">Preview</button>
+            <button class="bunning_btn" id="save_draft_p">Save Draft</button>
+            <button class="bunning_btn" id="Cancel">Cancel</button>
         </div>
     </div>
+
+    <script src="${asset.get('/html/assets/quilt.js')}"></script>
+        <#-- Initialize Quill editor -->
+        <script>
+            var editorss ={};
+            const { createApp } = Vue;
+            const vueData = createApp({
+                data() {
+                return {
+                    count: 1,
+                    editors: {},
+                };
+                },
+                methods: {
+                    addEditor() {
+                        console.log('cll')
+                        this.count = this.count + 1;
+                    },
+                    removeEditor(e) {
+                        console.log(e, 'target')
+                        e.path[1]?.remove()
+
+                        /** Re render and change class in addStep div on click of removeBtn  */
+                        let count_vue=document.querySelectorAll(".editor").length;
+                        console.log('count data is using vue js ',count_vue)
+                        if (count_vue < 10) {
+                        document.getElementById("addStep").classList.add('d_block');
+                        } else {
+                        document.getElementById("addStep").classList.remove('d_none');
+                        }
+                    },
+                    addQuil() {
+                        new Quill('#editor' + this.count, {
+                        modules: {
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ["bold", "italic", "underline", "link", "image", "video"]
+                            ],
+                        },
+                        placeholder: "Hint :Describe what you did,be as detailed as possible",
+                        theme: "snow",
+                        });
+                    },
+                    onInput(e){
+                    data=this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
+                    },
+                    submitForm() {
+                        console.log(this.editors, "editor data")
+                    }
+                },
+                mounted(){
+                    this?.addQuil();
+                },
+                updated(){
+                    this?.addQuil();
+    
+                    /** button event add a steps of text editor */
+                    document.querySelector('.plusBtn').addEventListener('click', function(){
+                        var value_bunn=document.querySelectorAll('.editor');
+                        if(value_bunn.length > 9){
+                            document.querySelector('.addStep').classList.add('d_none');
+                             if(document.querySelector('.addStep').classList.contains('d_block')){
+                                document.querySelector('.addStep').classList.remove('d_block');
+                            }
+                        }
+                    })
+                },
+            }).mount("#app");
+            </script>
+        <#assign userD = rest("2.0", "/search?q=" + "SELECT *  FROM users WHERE id='${user.id}'"?url) />
+        <#assign aDateTime = .now>
+        <#list userD.data.items as user_items>
+        <#assign user_rank = user_items.rank.name>
+        </#list >
     <@liaAddScript>
     ;(function ($) {
-    let labels_project_Arr = [];
-    $(".askaquestion_bunn").hide();
-    $(".AskaQuestion_class").show();
-    var element = document.getElementById("remove1");
-    element.classList.add("mystyle");
-    $('.header_title').append("<h1>Ask a home improvement question<h1>");
-   
-    <#--  On button click close image viewer  -->
-    $('#img_remove_btn_share').on('click', function(){
-        if($( "#img_View_share" ).hasClass('d_block')){
-            $('#img_View_share').removeClass('d_block');
-        }
-    });
+                   
+        let labels_project_Arr = [];
+        var image_data;
+        var image_id;
 
-    <#--  main button functional events Ask a home improvement question && Share a home improvement project -->
+        $(".askaquestion_bunn").hide();
+        $(".AskaQuestion_class").show();
+        
+        var element = document.getElementById("remove1");
+        element.classList.add("mystyle");
+        $('.header_title').append("<h1>Ask a home improvement question<h1>");
+   
+        <#--  On button click close image viewer  -->
+        $('#img_remove_btn_share').on('click', function(){
+            if($( "#img_View_share" ).hasClass('d_block')){
+                document.getElementById("share_upload_img").innerHTML = "Upload Image";
+                $('#img_View_share').removeClass('d_block');
+            }
+        });
+
+        <#--  main button functional events Ask a home improvement question && Share a home improvement project -->
         $('.bunnings_button_share').click(function(){
             $('.askaquestion_bunn').show();
             $(".AskaQuestion_class").hide();
@@ -515,9 +537,11 @@
             $('.bunnings_button_share').removeClass('active');
             $('.bunnings_button_askme').addClass('active');
         });
-    <#--  selected label function event  -->
+
+        <#--  selected label function event  -->
         $(".button_label").on("click", function($event){
             var label_project=$event.target.getAttribute("value");
+             $event.target.setAttribute("class", "label_active");
              var Array_labels=label_project.split("_");
             var i=0;
                 var data_lables_project={
@@ -526,30 +550,90 @@
                 }
             labels_project_Arr.push(data_lables_project);
         });
-    <#--  JSON Obj Genration for Share a completed project  -->
+
+        <#--  JSON Obj Genration for Share a completed project  -->
         $("#previewss").click(function(){
+            var steps_text_data = vueData.$data.editors;
             let bunning_label1 = $("#bunning_project_label1").text();
             let bunning_input1 = $("#bunning_project_val1").val();
             let bunning_board_label = $("#bunning_project_board_label").text();
             let bunning_board_val = $("#bunning_project_board_val").val();
             let fileUp_loadproject = $("#image.content").val();
-            <#--  let fileUp_loadproject = ""  -->
-            let textEditor_pro = $("#sample_editor2").text();
-            FinalData_project = `<div>
-                <div class='row'>
-                    <span class='key'>` + [bunning_label1] + `:</span><span class='value'>` + bunning_input1 + `</span>
+            <#--  let fileUp_loadproject = "";  -->
+            let textEditor_pro_one = $("#editor_one > .ql-editor").html();
+            let textEditor_pro_two = $("#editor_two > .ql-editor").html();
+            let textEditor_pro_three = $("#editor_three > .ql-editor").html();
+            FinalData_project = `<div class="lia-quilt lia-quilt-forum-message lia-quilt-layout-one-column-message">
+                <div class="lia-quilt-row lia-quilt-row-header">
+                    <div class="lia-quilt-column lia-quilt-column-16 lia-quilt-column-left lia-quilt-column-header-left">
+                        <div class="lia-quilt-column-alley lia-quilt-column-alley-left">
+                            <div class="lia-message-author-avatar lia-component-author-avatar lia-component-message-view-widget-author-avatar">
+                            <div class="UserAvatar lia-user-avatar lia-component-common-widget-user-avatar">
+                                <img class="lia-user-avatar-message" title="${user.login}" alt="${user.login}" id="imagedisplay_983c1c939fb7aa_2aed8" src="/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0">
+                            </div>
+                            </div>
+                            <div class="lia-message-author-with-avatar">
+                            <span class="UserName lia-user-name lia-user-rank-Community-Manager lia-component-message-view-widget-author-username">
+                            <img class="lia-user-rank-icon lia-user-rank-icon-left" title="${user_rank}" alt="${user_rank}" id="display_983c1c939fb7aa_2aed8" src="/i/rank_icons/admin.gif">
+                            <a class="lia-link-navigation lia-page-link lia-user-name-link" style="color:#FF3366" target="_self" aria-label="View Profile of${user.login}" itemprop="url" id="link_983c1c939fb7aa_2aed8" href="https://italent2.demo.lithium.com/t5/user/viewprofilepage/user-id/${user.id}"><span class="login-bold">${user.login}</span></a>
+                            </span>
+                            </div>
+                            <div class="lia-message-author-rank lia-component-author-rank lia-component-message-view-widget-author-rank">
+                            ${user_rank}
+                            </div>
+                            <div class="MessageInResponseTo lia-component-message-view-widget-in-response-to lia-component-in-response-to">
+                            </div>
+                        </div>
+                    </div>
+                        <div class="lia-quilt-column lia-quilt-column-08 lia-quilt-column-right lia-quilt-column-header-right">
+                            <div class="lia-quilt-column-alley lia-quilt-column-alley-right">
+                            <div title="Posted on" class="lia-message-post-date lia-component-post-date lia-component-message-view-widget-post-date">
+                                <span class="DateTime">
+                                <span title="${aDateTime?datetime}" class="local-friendly-date">
+                                 a moment ago
+                                </span>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
                 </div>
-                <div class="row">
-                    <span class='key'>` + [bunning_board_label] + `:</span><span class='value'>` + bunning_board_val + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>textdata</span><span class='value'>` + textEditor_pro + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>File:</span><span class='value'>` + fileUp_loadproject + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>Labels:</span><span class='value'>` + labels_project_Arr?.toString() + `</span>
+                <div class="lia-quilt-row lia-quilt-row-main">
+                    <div class="lia-quilt-column lia-quilt-column-24 lia-quilt-column-single lia-quilt-column-main">
+                        <div class="lia-quilt-column-alley lia-quilt-column-alley-single">
+                            <div class="lia-message-subject lia-component-message-view-widget-subject">
+                            <div class="MessageSubject">
+                                <h2 itemprop="name" class="message-subject">
+                                    <span class="lia-message-read">
+                                        <div class="lia-message-subject">
+                                        `+bunning_input1+`
+                                        <#--  here title  -->
+                                        </div>
+                                    </span>
+                                </h2>
+                            </div>
+                            </div>
+                            <div itemprop="text" id="bodyDisplay_983c1c939fb7aa_2aed8" class="lia-message-body lia-component-message-view-widget-body lia-component-body-signature-highlight-escalation lia-component-message-view-widget-body-signature-highlight-escalation">
+                            <div class="lia-message-body-content">
+                            `+textEditor_pro_one+`
+                                <#--  here body   -->
+                            </div>
+                            <div class="lia-message-body-content">
+                            `+textEditor_pro_two+`
+                                <#--  here body   -->
+                            </div>
+                            <div class="lia-message-body-content">
+                            `+textEditor_pro_three+`
+                                <#--  here body   -->
+                            </div>
+                            <div class="lia-message-body-content">
+                            `+steps_text_data+`
+                                <#--  here body   -->
+                            </div>
+                            </div>
+                            <div class="lia-rating-metoo lia-component-me-too lia-component-message-view-widget-me-too">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 </div>`;
              <#--  Preview button popup function  -->
@@ -559,41 +643,63 @@
                         $("#popup_project").hide();
                     })
         })
-    <#-- JSON Obj Genration  done   -->
-    <#--  post call using fetch   -->
+        <#-- JSON Obj Genration  done   -->
+
+        <#--  post call using fetch   -->
         $("#Post_data_project").click(function(){
+            console.log(vueData.$data.editors, 'test editors')
+            var steps_text_data = vueData.$data.editors;
             let bunning_label1 = $("#bunning_project_label1").text();
             let bunning_input1 = $("#bunning_project_val1").val();
             let bunning_board_label = $("#bunning_project_board_label").text();
             let bunning_board_val = $("#bunning_project_board_val").val();
             let fileUp_loadproject = $("#image.content").val();
             <#--  let fileUp_loadproject = "";  -->
-            let textEditor_pro = $("#sample_editor2").text();
-    
+            let textEditor_pro_one = $("#editor_one > .ql-editor").html();
+            let textEditor_pro_two = $("#editor_two > .ql-editor").html();
+            let textEditor_pro_three = $("#editor_three > .ql-editor").html();
+
             fetch("/api/2.0/messages", {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify({"data": { 
-                "type":"message",
-                    "subject":bunning_input1,
-                    "body":JSON.stringify({
-                           "Board_Name":bunning_board_val,
-                           "text_body":textEditor_pro,
-                           "image_url":fileUp_loadproject,
-                           "label":labels_project_Arr
-                    }),
-                    "board":{
-                        "id":bunning_board_val
+                
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                 },
+                method: "POST",
+                body: JSON.stringify({"data":
+                    {
+                        "type":"message",
+                        "subject":bunning_input1,
+                        "body":textEditor_pro_one,
+                        "board":{
+                            "id":bunning_board_val
+                        },
+                        cover_image:{
+                            type: "image",
+                            id:fileUp_loadproject
+                        },
+                        "labels": {
+                            "items":labels_project_Arr
+                        },
+                        c_bunnings_post: JSON.stringify({
+                            "description" : textEditor_pro_one,
+                            "Tools" : textEditor_pro_two,
+                            "Materials" : textEditor_pro_three,
+                            "Steps" :  steps_text_data 
+                        })
                     }
-            }})
+                })
             }).then((response) => response)
-             .then((json) => console.log(json))
+             .then((json) => {
+                <#--  window.location.reload();  -->
+                <#--  location.href = 'https://italent2.demo.lithium.com/t5/'+bunning_board_label+'/bd-p/'+bunning_board_val;  -->
+                console.log(json, 'json')
+            })
             .catch(err => console.error(err));
 
         });
+
+
         <#--  image post call  -->
         document.getElementById("image.content").addEventListener("change", (e) => {
             let file = e.target.files[0];
@@ -629,13 +735,14 @@
                     contentType: false,
                 }).then(res => res.json()).then(val => {
                     image_data=val.data.original_href;
-                    image_id=val.data.id;
+                    image_id = val.data.id;
                     <#--  after upload image block condtion  -->
                       if(image_data){
                         $('#img_View_share').addClass('d_block');
                         $('#img_share_id').attr('src',image_data);
                     }
                     $('#loadingTxt')?.removeClass('d_block');
+                    document.getElementById("share_upload_img").innerHTML = "Replace Image";
                 }).catch(e => {
                      $('#loadingTxt')?.removeClass('d_block');
                     console.log("err", e)
@@ -644,6 +751,7 @@
         });
     })(LITHIUM.jQuery);
     </@liaAddScript>
+    <#-- Share a project ends here   -->
 
     <#--  Ask a Question start here  -->
     <div class="AskaQuestion_class">
@@ -669,9 +777,6 @@
 
                     <#-- Create the editor container -->
                     <div id="editor_one_ask">
-                    <#--  <p>Hello World!</p>
-                    <p>Some initial <strong>bold</strong> text</p>
-                    <p><br></p>  -->
                     </div>
 
                     <#-- Include the Quill library -->
@@ -681,11 +786,10 @@
                     <script>
                     var quill = new Quill('#editor_one_ask', {
                         modules: {
-                        toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline', 'link', 'video'],
-                        ['image', 'code-block']
-                        ]
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ['bold', 'italic', 'underline', 'link', 'image', 'video']
+                            ]
                         },
                         placeholder: 'Hint:Add as much details as possible nd add your best photo first',
                         theme: 'snow'
@@ -694,9 +798,9 @@
                 <#-- test editor component end here  -->
             </div>
             <div>
-            <label for="image.content" class="btn">Upload Image</label>
-                <input type='file' name='image.content' class='uploadBtn' id='image.contentss' value='Upload Image'  accept="image/png, image/jpeg"/>
-                <span class='loadingTxt d_none' id='loadingTxt'>Uploading Image Wait ...</span>
+            <label for="image.contentss"  class="btn" id="image_ask_btn">Upload Image</label>
+                <input type='file' name='image.contentss' class='uploadBtn' style='display:none' id='image.contentss' value='Upload Image'  accept="image/png, image/jpeg"/>
+                <span class='loadingTxt d_none' id='loadingTxtss'>Uploading Image Wait ...</span>
                <div id='img_View_id' class="img_View_id">
                     <button id="img_remove_btn" class="remove_editor">X</button>
                     <img src="" alt="cover image" id="img_ask_id" class="img_ask_class" >
@@ -716,31 +820,38 @@
                 <div class='buttons'><button class='popup_btn success'>Okay</button><button class='popup_btn cancel'>Cancel</button></div>
             </div>
             <div>
-                <button id="bunning_post">Post</button>
-                <button  id="preview_ask">Preview</button>
-                <button>Save Draft</button>
-                <button>Cancel</button>
+                <button class="bunning_btn" id="bunning_post">Post</button>
+                <button class="bunning_btn"  id="preview_ask">Preview</button>
+                <button class="bunning_btn" >Save Draft</button>
+                <button class="bunning_btn" id="bunnings_cancel">Cancel</button>
             </div>
         </div><br>
     </div>
-    <#-- Share a project end here   -->
+    <#--  <#assign userD = rest("2.0", "/search?q=" + "SELECT *  FROM users WHERE id='${user.id}'"?url) />
+    <#assign aDateTime = .now>
+    <#list userD.data.items as user_items>
+      <#assign user_rank = user_items.rank.name>
+    </#list >  -->
     <@liaAddScript>
     ;(function ($) {
         let selectedLabelsArr = [];
         let FinalData;
-        var image_data;
-        var image_id;
+        var image_data_ask;
+        var image_id_ask;
 
         <#--  On button click close image viewer  -->
         $('#img_remove_btn').on('click', function(){
             if($( "#img_View_id" ).hasClass('d_block')){
+                document.getElementById("image_ask_btn").innerHTML = "Upload Image";
                 $('#img_View_id').removeClass('d_block');
             }
         });
 
         <#--  lables data functions   -->
+        
         $('*[data-id="button_label_ask"]').on("click", function($event){
             let label=$event.target.getAttribute("value");
+            var element_event=$event.target.toggleClass("label_active");
             var Array_l=label.split("_");
             var i=0;
                 var data_lables={
@@ -756,24 +867,68 @@
             let inp2Title_ask = $("#selectBoxLabel2_ask").text();
             let inp2Value_ask = $("#selectBox2_ask").val();
             let textEditor_Title_ask = $("#textEditorTitle_ask").text();
-            let textEditor_ask = $("#sampleeditor").html();
+             let textEditor_ask = $("#editor_one_ask > .ql-editor").html();
             let fileUpload_ask = $("#image.contentss").val();
             console.log(fileUpload_ask, "fileUpload_ask")
-            FinalData = `<div>
-                <div class='row'>
-                    <span class='key'>` + [inp1Title_ask] + `:</span><span class='value'>` + inp1Value_ask + `</span>
+            FinalData = `<div class="lia-quilt lia-quilt-forum-message lia-quilt-layout-one-column-message">
+                <div class="lia-quilt-row lia-quilt-row-header">
+                    <div class="lia-quilt-column lia-quilt-column-16 lia-quilt-column-left lia-quilt-column-header-left">
+                        <div class="lia-quilt-column-alley lia-quilt-column-alley-left">
+                            <div class="lia-message-author-avatar lia-component-author-avatar lia-component-message-view-widget-author-avatar">
+                            <div class="UserAvatar lia-user-avatar lia-component-common-widget-user-avatar">
+                                <img class="lia-user-avatar-message" title="${user.login}" alt="${user.login}" id="imagedisplay_983c1c939fb7aa_2aed8" src="/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0">
+                            </div>
+                            </div>
+                            <div class="lia-message-author-with-avatar">
+                            <span class="UserName lia-user-name lia-user-rank-Community-Manager lia-component-message-view-widget-author-username">
+                            <img class="lia-user-rank-icon lia-user-rank-icon-left" title="${user_rank}" alt="${user_rank}" id="display_983c1c939fb7aa_2aed8" src="/i/rank_icons/admin.gif">
+                            <a class="lia-link-navigation lia-page-link lia-user-name-link" style="color:#FF3366" target="_self" aria-label="View Profile of${user.login}" itemprop="url" id="link_983c1c939fb7aa_2aed8" href="https://italent2.demo.lithium.com/t5/user/viewprofilepage/user-id/${user.id}"><span class="login-bold">${user.login}</span></a>
+                            </span>
+                            </div>
+                            <div class="lia-message-author-rank lia-component-author-rank lia-component-message-view-widget-author-rank">
+                            ${user_rank}
+                            </div>
+                            <div class="MessageInResponseTo lia-component-message-view-widget-in-response-to lia-component-in-response-to">
+                            </div>
+                        </div>
+                    </div>
+                        <div class="lia-quilt-column lia-quilt-column-08 lia-quilt-column-right lia-quilt-column-header-right">
+                            <div class="lia-quilt-column-alley lia-quilt-column-alley-right">
+                            <div title="Posted on" class="lia-message-post-date lia-component-post-date lia-component-message-view-widget-post-date">
+                                <span class="DateTime">
+                                <span title="${aDateTime?datetime}" class="local-friendly-date">
+                                a moment ago
+                                </span>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
                 </div>
-                <div class="row">
-                    <span class='key'>` + [inp2Title_ask] + `:</span><span class='value'>` + inp2Value_ask + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>` + [textEditor_Title_ask] + `:</span><span class='value'>` + textEditor_ask + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>File:</span><span class='value'>` + fileUpload_ask + `</span>
-                </div>
-                <div class="row">
-                    <span class='key'>Labels:</span><span class='value'>` + selectedLabelsArr?.toString() + `</span>
+                <div class="lia-quilt-row lia-quilt-row-main">
+                    <div class="lia-quilt-column lia-quilt-column-24 lia-quilt-column-single lia-quilt-column-main">
+                        <div class="lia-quilt-column-alley lia-quilt-column-alley-single">
+                            <div class="lia-message-subject lia-component-message-view-widget-subject">
+                            <div class="MessageSubject">
+                                <h2 itemprop="name" class="message-subject">
+                                    <span class="lia-message-read">
+                                        <div class="lia-message-subject">
+                                        `+inp1Value_ask+`
+                                        <#--  here title  -->
+                                        </div>
+                                    </span>
+                                </h2>
+                            </div>
+                            </div>
+                            <div itemprop="text" id="bodyDisplay_983c1c939fb7aa_2aed8" class="lia-message-body lia-component-message-view-widget-body lia-component-body-signature-highlight-escalation lia-component-message-view-widget-body-signature-highlight-escalation">
+                            <div class="lia-message-body-content">
+                            `+textEditor_ask+`
+                                <#--  here body   -->
+                            </div>
+                            </div>
+                            <div class="lia-rating-metoo lia-component-me-too lia-component-message-view-widget-me-too">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 </div>`;
             <#--  Preview button popup function  -->
@@ -790,7 +945,7 @@
             if (!file) {
             return null;
             }
-            $('#loadingTxt')?.addClass('d_block');
+            $('#loadingTxtss')?.addClass('d_block');
             return new Promise((resolve, reject) => {
             console.log("file upload", file);
             const data = new FormData();
@@ -819,24 +974,24 @@
             })
                 .then((res) => res.json())
                 .then((val) =>{
-                    image_data=val.data.original_href;
-                    image_id=val.data.id;
+                    image_data_ask=val.data.original_href;
+                    image_id_ask=val.data.id;
                     <#--  after upload image block condtion  -->
-                      if(image_data){
+                      if(image_data_ask){
                         $('#img_View_id').addClass('d_block');
-                        $('#img_ask_id').attr('src',image_data);
+                        $('#img_ask_id').attr('src',image_data_ask);
                     }
-                    $('#loadingTxt')?.removeClass('d_block');
-                    console.log(image_id,"image id is ");
-                    console.log(image_data,"image_data data href")
+                    $('#loadingTxtss')?.removeClass('d_block');
+                    document.getElementById("image_ask_btn").innerHTML = "Replace Image";
+                    console.log(image_id_ask,"image id is ");
+                    console.log(image_data_ask,"image_data_ask data href")
                 })
                 .catch((e) => {
-                    $('#loadingTxt')?.removeClass('d_block');
+                    $('#loadingTxtss')?.removeClass('d_block');
                     console.log("err", e)
                 });
             });
         });
-
         <#--  fetch the data using java script   -->
             $("#bunning_post").click(function(){
             let inp1Title_ask = $("#titleInputLabel2_ask").text();
@@ -844,8 +999,8 @@
             let inp2Title_ask = $("#selectBoxLabel2_ask").text();
             let inp2Value_ask = $("#selectBox2_ask").val();
             let textEditor_Title_ask = $("#textEditorTitle_ask").text();
-            let textEditor_ask = $("#editor_one_ask").html();
-            let fileUpload_ask = $("#image.content").val();
+            let textEditor_ask = $("#editor_one_ask > .ql-editor").html();
+            let fileUpload_ask = $("#image.contentss").val();
     
             fetch("/api/2.0/messages", {
             headers: {
@@ -853,7 +1008,7 @@
                 "Content-Type": "application/json",
             },
             method: "POST",
-            <#--    -->
+         
              body: JSON.stringify({"data":
                 {
                     "type":"message",
@@ -864,7 +1019,7 @@
                     },
                     cover_image:{
                         type: "image",
-                        id:image_id
+                        id:image_id_ask
                     },
                     "labels": {
                         "items":selectedLabelsArr
@@ -873,11 +1028,23 @@
             })
             }).then((response) => response)
              .then((json) => {
-                window.reload();
+
+                 location.href = 'https://italent2.demo.lithium.com/t5/'+inp2Title_ask+'/bd-p/'+inp2Value_ask;
+
                 console.log(json)
             })
             .catch(err => console.error(err));
+
+                
+
         });
+
+        <#--  cancel functions bunnings_cancel  -->
+         $("#bunnings_cancel").click(function(){
+             window.location.reload();
+         });
+
 
     })(LITHIUM.jQuery);
     </@liaAddScript>
+    <#--  Ask a Question start here  -->

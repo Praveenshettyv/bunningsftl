@@ -254,7 +254,22 @@
         font-size:10px;
         margin-bottom: 20px;
     }
+    .bunning_btn{
+        background-color: #00001a;
+        border: none;
+        color: white;
+        padding: 10px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 4px 2px;
+        cursor: pointer;
+        font-size: 16px
+    }
 </style>
+<script src="https://unpkg.com/vue@3"></script>
+<link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
+
     <#assign Res_board=  rest("2.0","/search?q=" + "select title,id from boards"?url).data  />
     <div class="button_bunn_cls">
         <button class="bunnings_button_askme active">Ask a home improvement Question</button>
@@ -304,7 +319,6 @@
 
                     <#-- Include the Quill library -->
                     <script src="${asset.get('/html/assets/quilt.js')}"></script>
-
                     <!-- Initialize Quill editor -->
                     <script>
                     var quill = new Quill('#editor_one', {
@@ -325,12 +339,9 @@
                         <#--  editor start here  -->
                         <#-- Include stylesheet -->
                             <link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
-
                             <#-- Create the editor container -->
                             <div id="editor_two">
-
                             </div>
-
                             <#-- Include the Quill library -->
                             <script src="${asset.get('/html/assets/quilt.js')}"></script>
 
@@ -385,84 +396,14 @@
             <p class='under_title'>List the steps you took to get to the final product. This will help everyone follow along as they try it themseleves.</p>
             <div class="inner_categorypage_add_step_box" id='inner_categorypage_add_step_box'>
             <#--  text editor  start here   -->
-            <script src="https://unpkg.com/vue@3"></script>
-            <link href="${asset.get('/html/assets/quilt.css')}" rel="stylesheet">
 
             <div id="app" class='editors_box' >
-            <div v-for="id in count" class="editor">
-                <button v-bind:id="'remove' + id" v-on:click="e => removeEditor(e)" class="remove_editor">X</button>
-                <div v-bind:id="'editor' + id" class='editor_comp' contenteditable @input="onInput"></div>
-            </div>
+                <div v-for="id in count" class="editor">
+                    <button v-bind:id="'remove' + id" v-on:click="e => removeEditor(e)" class="remove_editor">X</button>
+                    <div v-bind:id="'editor' + id" class='editor_comp' contenteditable @input="onInput"></div>
+                </div>
             <div class='addStep' id='addStep'><div class='innerAddStep'><div v-on:click="addEditor()" class='plusBtn'>+</div><div class='addStepTxt'>Click to Add Another step</div></div></div>
             </div>
-            <script src="${asset.get('/html/assets/quilt.js')}"></script>
-            <#-- Initialize Quill editor -->
-            <script>
-            const { createApp } = Vue;
-
-            createApp({
-                data() {
-                return {
-                    count: 1,
-                    editors: {}
-                };
-                },
-                methods: {
-                addEditor() {
-                    this.count = this.count + 1;
-                },
-                removeEditor(e) {
-                     console.log(e, 'target')
-                    e.path[1]?.remove()
-
-                    /** Re render and change class in addStep div on click of removeBtn  */
-                    let count_vue=document.querySelectorAll(".editor").length;
-                    console.log('count data is using vue js ',count_vue)
-                    if (count_vue < 10) {
-                       document.getElementById("addStep").classList.add('d_block');
-                    } else {
-                       document.getElementById("addStep").classList.remove('d_none');
-                    }
-                   
-                },
-                addQuil() {
-                    new Quill('#editor' + this.count, {
-                    modules: {
-                        toolbar: [
-                            [{ header: [1, 2, false] }],
-                            ["bold", "italic", "underline", "link", "image", "video"]
-                        ],
-                    },
-                    placeholder: "Hint :Describe what you did,be as detailed as possible",
-                    theme: "snow",
-                    });
-                },
-                onInput(e){
-                    this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
-                },
-                submitForm() {
-                    console.log(this.editors, "editor data")
-                },
-                },
-                mounted(){
-                    this?.addQuil();
-                },
-                updated(){
-                    this?.addQuil();
-
-                    /** button event add a steps of text editor */
-                    document.querySelector('.plusBtn').addEventListener('click', function(){
-                        var value_bunn=document.querySelectorAll('.editor');
-                        if(value_bunn.length > 9){
-                            document.querySelector('.addStep').classList.add('d_none');
-                             if(document.querySelector('.addStep').classList.contains('d_block')){
-                                document.querySelector('.addStep').classList.remove('d_block');
-                            }
-                        }
-                    })
-                },
-            }).mount("#app");
-            </script>
             <#--   text editor  ends here -->
             </div>
         </div>
@@ -477,15 +418,85 @@
                 <div class='buttons'><button class='popup_btn_project success'>Okay</button><button class='popup_btn_project cancel'>Cancel</button></div>
             </div>
         <div>
-            <button id="Post_data_project">Post</button>
-            <button id="previewss">Preview</button>
-            <button>Save Draft</button>
-            <button id="Cancel">Cancel</button>
+            <div class="bunning_btn"  id="Post_data_project">Post</div>
+            <button  class="bunning_btn"  id="previewss">Preview</button>
+            <button class="bunning_btn" id="save_draft_p">Save Draft</button>
+            <button class="bunning_btn" id="Cancel">Cancel</button>
         </div>
     </div>
 
+    <script src="${asset.get('/html/assets/quilt.js')}"></script>
+        <#-- Initialize Quill editor -->
+        <script>
+            var editorss ={};
+            const { createApp } = Vue;
+            const vueData = createApp({
+                data() {
+                return {
+                    count: 1,
+                    editors: {},
+                };
+                },
+                methods: {
+                    addEditor() {
+                        console.log('cll')
+                        this.count = this.count + 1;
+                    },
+                    removeEditor(e) {
+                        console.log(e, 'target')
+                        e.path[1]?.remove()
+
+                        /** Re render and change class in addStep div on click of removeBtn  */
+                        let count_vue=document.querySelectorAll(".editor").length;
+                        console.log('count data is using vue js ',count_vue)
+                        if (count_vue < 10) {
+                        document.getElementById("addStep").classList.add('d_block');
+                        } else {
+                        document.getElementById("addStep").classList.remove('d_none');
+                        }
+                    },
+                    addQuil() {
+                        new Quill('#editor' + this.count, {
+                        modules: {
+                            toolbar: [
+                                [{ header: [1, 2, false] }],
+                                ["bold", "italic", "underline", "link", "image", "video"]
+                            ],
+                        },
+                        placeholder: "Hint :Describe what you did,be as detailed as possible",
+                        theme: "snow",
+                        });
+                    },
+                    onInput(e){
+                    data=this.editors[e.target.id] = e.target?.children[0]?.innerHTML;
+                    },
+                    submitForm() {
+                        console.log(this.editors, "editor data")
+                    }
+                },
+                mounted(){
+                    this?.addQuil();
+                },
+                updated(){
+                    this?.addQuil();
+    
+                    /** button event add a steps of text editor */
+                    document.querySelector('.plusBtn').addEventListener('click', function(){
+                        var value_bunn=document.querySelectorAll('.editor');
+                        if(value_bunn.length > 9){
+                            document.querySelector('.addStep').classList.add('d_none');
+                             if(document.querySelector('.addStep').classList.contains('d_block')){
+                                document.querySelector('.addStep').classList.remove('d_block');
+                            }
+                        }
+                    })
+                },
+            }).mount("#app");
+            </script>
+
     <@liaAddScript>
     ;(function ($) {
+                   
         let labels_project_Arr = [];
         var image_data;
         var image_id;
@@ -573,6 +584,8 @@
 
         <#--  post call using fetch   -->
         $("#Post_data_project").click(function(){
+            console.log(vueData.$data.editors, 'test editors')
+            var steps_text_data = vueData.$data.editors;
             let bunning_label1 = $("#bunning_project_label1").text();
             let bunning_input1 = $("#bunning_project_val1").val();
             let bunning_board_label = $("#bunning_project_board_label").text();
@@ -584,7 +597,7 @@
             let textEditor_pro_three = $("#editor_three > .ql-editor").html();
 
             fetch("/api/2.0/messages", {
-                <#--    -->
+                
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
@@ -604,18 +617,25 @@
                         },
                         "labels": {
                             "items":labels_project_Arr
-                        }
+                        },
+                        c_bunnings_post: JSON.stringify({
+                            "description" : textEditor_pro_one,
+                            "Tools" : textEditor_pro_two,
+                            "Materials" : textEditor_pro_three,
+                            "Steps" :  steps_text_data 
+                        })
                     }
                 })
             }).then((response) => response)
              .then((json) => {
-                window.location.reload();
-                location.href = 'https://italent2.demo.lithium.com/t5/'+bunning_board_label+'/bd-p/'+bunning_board_val;
-                console.log(json)
+                <#--  window.location.reload();  -->
+                <#--  location.href = 'https://italent2.demo.lithium.com/t5/'+bunning_board_label+'/bd-p/'+bunning_board_val;  -->
+                console.log(json, 'json')
             })
             .catch(err => console.error(err));
 
         });
+
 
         <#--  image post call  -->
         document.getElementById("image.content").addEventListener("change", (e) => {
@@ -737,10 +757,10 @@
                 <div class='buttons'><button class='popup_btn success'>Okay</button><button class='popup_btn cancel'>Cancel</button></div>
             </div>
             <div>
-                <button id="bunning_post">Post</button>
-                <button  id="preview_ask">Preview</button>
-                <button>Save Draft</button>
-                <button>Cancel</button>
+                <button class="bunning_btn" id="bunning_post">Post</button>
+                <button class="bunning_btn"  id="preview_ask">Preview</button>
+                <button class="bunning_btn" >Save Draft</button>
+                <button class="bunning_btn" >Cancel</button>
             </div>
         </div><br>
     </div>
@@ -752,7 +772,6 @@
         var image_data_ask;
         var image_id_ask;
 
-
         <#--  On button click close image viewer  -->
         $('#img_remove_btn').on('click', function(){
             if($( "#img_View_id" ).hasClass('d_block')){
@@ -762,9 +781,10 @@
         });
 
         <#--  lables data functions   -->
+        
         $('*[data-id="button_label_ask"]').on("click", function($event){
             let label=$event.target.getAttribute("value");
-            $event.target.setAttribute("class", "label_active");
+            var element_event=$event.target.toggleClass("label_active");
             var Array_l=label.split("_");
             var i=0;
                 var data_lables={
@@ -861,7 +881,6 @@
                 });
             });
         });
-
         <#--  fetch the data using java script   -->
             $("#bunning_post").click(function(){
             let inp1Title_ask = $("#titleInputLabel2_ask").text();
@@ -878,7 +897,7 @@
                 "Content-Type": "application/json",
             },
             method: "POST",
-            <#--    -->
+         
              body: JSON.stringify({"data":
                 {
                     "type":"message",
@@ -898,15 +917,17 @@
             })
             }).then((response) => response)
              .then((json) => {
-                 <#--  https://italent2.demo.lithium.com/t5/Theories-Dialog/bd-p/lean_theories  -->
+
                  location.href = 'https://italent2.demo.lithium.com/t5/'+inp2Title_ask+'/bd-p/'+inp2Value_ask;
-                <#--  window.location.reload();  -->
+
                 console.log(json)
             })
             .catch(err => console.error(err));
+
+                
+
         });
 
     })(LITHIUM.jQuery);
     </@liaAddScript>
-
     <#--  Ask a Question start here  -->

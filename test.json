@@ -1,0 +1,221 @@
+{
+    "status" : "success",
+    "message" : "",
+    "http_code" : 200,
+    "data" : {
+      "type" : "users",
+      "list_item_type" : "user",
+      "size" : 1,
+      "items" : [ {
+        "type" : "user",
+        "id" : "32565",
+        "href" : "/users/32565",
+        "view_href" : "/t5/user/viewprofilepage/user-id/32565",
+        "login" : "praveen1",
+        "email" : "praveenv@italentdigital.com",
+        "remember_password" : true,
+        "first_name" : "praveen",
+        "last_name" : "voruganti",
+        "online_status" : "online",
+        "personal_info_privacy" : "none",
+        "email_address_privacy" : "none",
+        "online_status_privacy" : "all",
+        "rank" : {
+          "type" : "rank",
+          "id" : "1",
+          "name" : "Community Manager",
+          "position" : 0,
+          "bold" : true,
+          "color" : "FF3366",
+          "roles_granted" : {
+            "query" : "SELECT * FROM roles WHERE ranks_granting.id = '1'"
+          },
+          "roles_removed" : {
+            "query" : "SELECT * FROM roles WHERE ranks_removing.id = '1'"
+          },
+          "icon_left" : "/i/rank_icons/admin.gif",
+          "formula_enabled" : false,
+          "formula" : "",
+          "simple_criteria" : {
+            "type" : "simple_rank_criteria",
+            "role" : {
+              "type" : "role",
+              "id" : "t:Administrator",
+              "href" : "/roles/t:Administrator"
+            },
+            "user" : { },
+            "number_of_posts" : 0,
+            "number_of_page_views" : 0,
+            "number_of_signins" : 0,
+            "minutes_online" : 0,
+            "minutes_since_registering" : 0,
+            "simple_formula" : "hasRole(\"Administrator\")"
+          },
+          "rank_status" : "active"
+        },
+        "avatar" : {
+          "type" : "avatar",
+          "profile" : "https://italent2.demo.lithium.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/profile/version/2?xdesc=1.0",
+          "message" : "https://italent2.demo.lithium.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/message/version/2?xdesc=1.0",
+          "inline" : "https://italent2.demo.lithium.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/inline/version/2?xdesc=1.0",
+          "favicon" : "https://italent2.demo.lithium.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/favicon/version/2?xdesc=1.0",
+          "print" : "https://italent2.demo.lithium.com/t5/image/serverpage/avatar-name/sports/avatar-theme/candy/avatar-collection/hobbies/avatar-display-size/print/version/2?xdesc=1.0"
+        },
+        "kudos_received" : {
+          "query" : "SELECT * FROM kudos WHERE message.author.id = '32565'"
+        },
+        "kudos_given" : {
+          "query" : "SELECT * FROM kudos WHERE user.id = '32565'"
+        },
+        "solutions_authored" : {
+          "query" : "SELECT * FROM messages WHERE author.id = '32565' AND is_solution = true"
+        },
+        "topics" : {
+          "query" : "SELECT * FROM messages WHERE author.id = '32565' AND depth = 0"
+        },
+        "threads_participated" : {
+          "query" : "SELECT * FROM messages WHERE participants.id = '32565' AND depth = 0"
+        },
+        "images" : {
+          "query" : "SELECT * FROM images WHERE owner.id = '32565'"
+        },
+        "public_images" : {
+          "query" : "SELECT * FROM images WHERE owner.id = '32565' AND album.privacy_level = 'public' AND visibility = 'public'"
+        },
+        "albums" : {
+          "query" : "SELECT * FROM albums WHERE owner.id = '32565'"
+        },
+        "videos" : {
+          "query" : "SELECT * FROM videos WHERE owner.id = '32565'"
+        },
+        "user_badges" : {
+          "list_item_type" : "user_badge",
+          "size" : 8,
+          "items" : [ {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "1",
+              "description" : "You will get this rank if you have 50 Kudos",
+              "title" : "Kudo Earner",
+              "icon_url" : "https://italent2.demo.lithium.com/html/badge_icons/_downloadfiles_wallpapers_1024_768_tulips_vector_wallpaper_vector_3d_90.jpg",
+              "awarded" : 6,
+              "activation_date" : "2018-06-22T06:53:30.077Z"
+            }
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "7",
+              "title" : "italent 2K18",
+              "icon_url" : "https://static1.squarespace.com/static/56097cd8e4b09fa70681cafd/t/5ac2ea8a1ae6cf15a4b73e79/1522723487728/V8+page+1.png?format=500w",
+              "awarded" : 3,
+              "activation_date" : "2018-06-25T11:59:53.471Z"
+            }
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "9",
+              "title" : "Advisor",
+              "icon_url" : "https://italent2.demo.lithium.com/html/badge_icons/badge_advisor.png",
+              "awarded" : 1,
+              "activation_date" : "2018-07-17T11:16:43.149Z"
+            }
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "11",
+              "title" : "rolebadge",
+              "icon_url" : "https://italent2.demo.lithium.com/html/badge_icons/_downloadfiles_wallpapers_1024_768_tulips_vector_wallpaper_vector_3d_90.jpg",
+              "awarded" : 105,
+              "activation_date" : "2021-04-09T08:34:33.351Z"
+            },
+            "earned_date" : "2022-01-03T07:00:22.026Z"
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "12",
+              "title" : "testbadge1",
+              "icon_url" : "https://italent2.demo.lithium.com/html/badge_icons/20.jpg",
+              "awarded" : 9,
+              "activation_date" : "2021-04-09T08:34:37.153Z"
+            }
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "10",
+              "title" : "Test1",
+              "icon_url" : "https://italent2.demo.lithium.com/html/badge_icons/_downloadfiles_wallpapers_1024_768_tulips_vector_wallpaper_vector_3d_90.jpg",
+              "awarded" : 886,
+              "activation_date" : "2021-04-09T08:34:46.420Z"
+            },
+            "earned_date" : "2022-01-03T09:00:19.525Z"
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "4",
+              "description" : "Sample Image",
+              "title" : "Sample",
+              "icon_url" : "https://kbob.github.io/images/sample-4.jpg",
+              "awarded" : 2,
+              "activation_date" : "2021-04-09T08:34:56.706Z"
+            }
+          }, {
+            "type" : "user_badge",
+            "badge" : {
+              "type" : "badge",
+              "id" : "8",
+              "description" : "This as logo symbol",
+              "title" : "LOGO",
+              "icon_url" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoZ_pXTtJLLTOCeRljfza-67PpHjbHa2Gb5aq7_sANQAccLHYS",
+              "awarded" : 0,
+              "activation_date" : "2022-04-01T06:47:32.485Z"
+            }
+          } ]
+        },
+        "following" : {
+          "query" : "SELECT * FROM users WHERE followers.id = '32565'"
+        },
+        "followers" : {
+          "query" : "SELECT * FROM users WHERE following.id = '32565'"
+        },
+        "language" : "en",
+        "metrics" : {
+          "type" : "user_metrics"
+        },
+        "settings" : {
+          "query" : "SELECT * FROM settings WHERE user.id = '32565'"
+        },
+        "registration_data" : {
+          "type" : "registration_data",
+          "registration_time" : "2021-12-27T11:46:00.729Z",
+          "status" : "fully-registered",
+          "registration_access_level" : "all",
+          "confirm_email_status" : true
+        },
+        "mailbox" : {
+          "type" : "mailbox"
+        },
+        "deleted" : false,
+        "roles" : {
+          "query" : "SELECT * FROM roles WHERE users.id = '32565'"
+        },
+        "messages" : {
+          "query" : "SELECT * FROM messages WHERE author.id = '32565'"
+        },
+        "reviews" : {
+          "query" : "SELECT * FROM reviews WHERE author.id = '32565'"
+        },
+        "last_visit_time" : "2022-06-06T06:51:29.894Z",
+        "date_pattern" : "MM-dd-yyyy",
+        "friendly_date_enabled" : true,
+        "friendly_date_max_age" : 1500
+      } ]
+    },
+    "metadata" : { }
+  }
